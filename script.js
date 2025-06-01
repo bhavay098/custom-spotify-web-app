@@ -37,11 +37,11 @@ async function getSongs(folder) {
         let li = document.createElement('li');  // creating li element
         li.dataset.url = `${currFolder}/${song}`;  // storing the actual song name along with .mp3 extension with song path in the li data attribute
         li.innerHTML = `
-        <img src="/images/music.svg" alt="">
+        <img src="images/music.svg" alt="">
         <div class="songName">
             <div>${song.replace('.mp3', '').trim()}</div>
         </div>
-        <img src="/images/playbtn2.svg" alt="">`;  // splitting the song href to get just the song name (line no. 31)
+        <img src="images/playbtn2.svg" alt="">`;  // splitting the song href to get just the song name (line no. 31)
         songUL.appendChild(li);
     });
 
@@ -51,7 +51,7 @@ async function getSongs(folder) {
             audio.src = li.dataset.url;  // get the URL directly from the li
             audio.play();  // starts playing the song
 
-            playbtn.src = '/images/pausebtn.svg'  // changing play button img to pause after playing the song
+            playbtn.src = 'images/pausebtn.svg'  // changing play button img to pause after playing the song
             document.querySelector('.songInfo').innerText = li.querySelector('.songName div').innerText;  // updating current playing song name from DOM
             // document.querySelector('.songTime').innerHTML = '00:00 / 00:00'  // updating current playing song time
             console.log(`Now Playing ${li.dataset.url}`);
@@ -110,7 +110,7 @@ async function playSong() {
 
             let firstLi = document.querySelector('.songList li');  // getting access of the first li
             document.querySelector('.songInfo').innerText = firstLi.querySelector('.songName div').innerText  // updating song name in playbar
-            document.querySelector('#playbtn').src = '/images/pausebtn.svg'  // changing play button to pause 
+            document.querySelector('#playbtn').src = 'images/pausebtn.svg'  // changing play button to pause 
         }
     })
 
@@ -132,11 +132,11 @@ async function playSong() {
     playbtn.addEventListener('click', () => {
         if (audio.paused) {
             audio.play();  // play the song if it is paused
-            playbtn.src = '/images/pausebtn.svg'  // changing play button img to pause btn
+            playbtn.src = 'images/pausebtn.svg'  // changing play button img to pause btn
         }
         else {
             audio.pause();  // pause the song if it's already played
-            playbtn.src = '/images/playbtn.svg'  // changing pause button img to play btn
+            playbtn.src = 'images/playbtn.svg'  // changing pause button img to play btn
         }
     });
 
@@ -179,7 +179,7 @@ async function playSong() {
 
             let currentLi = document.querySelectorAll('.songList li')[currentIndex - 1];  // getting access of the li which contains the song name playing after clicking previous
             document.querySelector('.songInfo').innerText = currentLi.querySelector('.songName div').innerText  // updating song name in playbar
-            document.querySelector('#playbtn').src = '/images/pausebtn.svg'  // changing play button to pause            
+            document.querySelector('#playbtn').src = 'images/pausebtn.svg'  // changing play button to pause            
         }
     });
 
@@ -195,7 +195,7 @@ async function playSong() {
 
             let currentLi = document.querySelectorAll('.songList li')[currentIndex + 1];  // getting access of the li which contains the song name playing after clicking next
             document.querySelector('.songInfo').innerText = currentLi.querySelector('.songName div').innerText  // updating song name in playbar
-            document.querySelector('#playbtn').src = '/images/pausebtn.svg'  // changing play button to pause
+            document.querySelector('#playbtn').src = 'images/pausebtn.svg'  // changing play button to pause
         }
     });
 
@@ -208,10 +208,10 @@ async function playSong() {
         audio.volume = inputValue / 100;  // dividing the value by 100 as audio.volume accepts values between 0.0 (silent) and 1.0 (full volume) 
 
         if (audio.volume === 0) {  // if volume is 0 then change the volume icon to mute
-            document.querySelector('.volume img').src = '/images/mute.svg';
+            document.querySelector('.volume img').src = 'images/mute.svg';
         }
         else {  // if voume isn't 0 then change the mute icon to volume
-            document.querySelector('.volume img').src = '/images/volume.svg';
+            document.querySelector('.volume img').src = 'images/volume.svg';
         }
     });
 
@@ -219,14 +219,14 @@ async function playSong() {
     document.querySelector('.volume>img').addEventListener('click', (event) => {
         if (event.target.src.includes('volume.svg')) {  // condition check weather song is unmuted
             // Mute
-            event.target.src = '/images/mute.svg'  // changing volume icon to mute icon
+            event.target.src = 'images/mute.svg'  // changing volume icon to mute icon
             audio.volume = 0;  // turning volume to 0
             document.querySelector('#volume').value = 0  // making the knob in the volume slider go to 0
             document.querySelector('#volume').style.setProperty('--percent', `0%`)  // updating the bg color of the volume slider track
         }
         else {
             // Unmute
-            event.target.src = '/images/volume.svg'
+            event.target.src = 'images/volume.svg'
             audio.volume = 0.5
             document.querySelector('#volume').value = 50
             document.querySelector('#volume').style.setProperty('--percent', `50%`)
