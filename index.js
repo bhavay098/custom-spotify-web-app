@@ -14,7 +14,7 @@ function formatTime(seconds) {
 
 async function getSongs(folder) {
     currFolder = folder;  // the value of the currFolder will be the file path we provide as an argument to the function
-    let response = await fetch(`http://127.0.0.1:3000/${folder}`);  // Makes a GET request to your local server (localhost:3000) at the /songs/ endpoint.
+    let response = await fetch(`/${folder}`);  // Makes a GET request to your local server (localhost:3000) at the /songs/ endpoint.
     let data = await response.text();  // Reads the body content of the response as plain text.
 
     let div = document.createElement('div');
@@ -62,7 +62,7 @@ async function getSongs(folder) {
 
 // Function to display all the albums on page
 async function displayAlbums() {
-    let response = await fetch(`http://127.0.0.1:3000/songs`);  // Makes a GET request to your local server (localhost:3000) at the /songs/ endpoint.
+    let response = await fetch(`/songs`);  // Makes a GET request to your local server (localhost:3000) at the /songs/ endpoint.
     let data = await response.text();  // Reads the body content of the response as plain text.
     let div = document.createElement('div');
     div.innerHTML = data;  // turning data into DOM elements
@@ -73,7 +73,7 @@ async function displayAlbums() {
             let folder = a.href.split('/').slice(-2)[0]  // extracting the folder names from a.href
 
             // Gettng the metadata of the folder
-            let response = await fetch(`http://127.0.0.1:3000/songs/${folder}/info.json`);  // fetching the data from the json file created in each of the folders in songs
+            let response = await fetch(`/songs/${folder}/info.json`);  // fetching the data from the json file created in each of the folders in songs
             let data = await response.json();
 
             // Inserting cards in the card container dynamically
