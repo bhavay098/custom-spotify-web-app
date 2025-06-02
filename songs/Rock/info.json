@@ -1,4 +1,11 @@
 {
     "title": "Rock Mix",
-    "description": "Get The Party Started"
+    "description": "Get The Party Started",
+    "songs": [
+        "Charlie Puth - We Don't Talk Anymore (feat. Selena Gomez).mp3",
+        "ElementD & Chris Linton - Ascend.mp3",
+        "Futuristik - Forgive Me.mp3",
+        "Heather Sommer & Uplink - Chance On Faith.mp3",
+        "The Weeknd - Can't Feel My Face.mp3"
+    ]
 }

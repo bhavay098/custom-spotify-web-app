@@ -1,4 +1,11 @@
 {
     "title": "Phonk",
-    "description": "Get Phonked"
+    "description": "Get Phonked",
+    "songs": [
+        "Charlie Puth - Attention.mp3",
+        "Charlie Puth - We Don't Talk Anymore (feat. Selena Gomez) copy.mp3",
+        "Charlie Puth - We Don't Talk Anymore (feat. Selena Gomez).mp3",
+        "Maduk - Go Home (Original Mix).mp3",
+        "Max Brhon - Cyberpunk.mp3"
+    ]
 }

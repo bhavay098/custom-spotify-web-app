@@ -1,4 +1,11 @@
 {
     "title": "Lofi Songs",
-    "description": "Just relax!"
+    "description": "Just relax!",
+    "songs": [
+        "Empire Of The Sun - We Are The People.mp3",
+        "Heuse - That Night (feat. Austin Salter).mp3",
+        "Jim Yosef & Sara Skinner - WILDFIRE.mp3",
+        "M83 - Solitude (Felsmann  Tiley Reinterpretation) copy.mp3",
+        "M83 - Solitude (Felsmann  Tiley Reinterpretation).mp3"
+    ]
 }

@@ -14,25 +14,14 @@ function formatTime(seconds) {
 
 async function getSongs(folder) {
     currFolder = folder;  // the value of the currFolder will be the file path we provide as an argument to the function
-    let response = await fetch(`/${folder}`);  // Makes a GET request to your local server (localhost:3000) at the /songs/ endpoint.
-    let data = await response.text();  // Reads the body content of the response as plain text.
-
-    let div = document.createElement('div');
-    div.innerHTML = data;  // turning data into DOM elements
-    let a = div.getElementsByTagName('a');  // Returns an HTMLCollection collection (an array-like object) of all <a> tags elements found within div.
-
-    songs = [];  // creating an empty array
-    for (let index = 0; index < a.length; index++) {  // Loop through all <a> tags
-        const element = a[index];
-
-        if (element.href.endsWith('.mp3')) {  //  element.href refers to the full URL of the <a> tag's href attribute.
-            songs.push(decodeURIComponent(element.href.split(`${folder}/`)[1]))  // pushing the song name extracted from URL into the songs array if true
-        }
-    }
+    let response = await fetch(`${folder}/info.json`);  // getting all info about the album from the info.json file
+    let albumData = await response.json();  // Reads the body content of the response as plain text.
+    songs = albumData.songs;
 
     // show all the songs in the library
     let songUL = document.querySelector('.songList ul');  // getting access of the first ul tag inside songList div
     songUL.innerHTML = "";  // clearing the ul first before displaying songs in it
+
     songs.forEach((song) => {
         let li = document.createElement('li');  // creating li element
         li.dataset.url = `${currFolder}/${song}`;  // storing the actual song name along with .mp3 extension with song path in the li data attribute
@@ -69,7 +58,7 @@ async function displayAlbums() {
 
     let anchors = div.getElementsByTagName('a');  // storing all the anchor tags in variable
     Array.from(anchors).forEach(async (a) => {  // converting the anchors variable from html collection to an Array to apply for each
-        if (a.href.includes('/songs') && !a.href.includes('.DS_Store') && !a.href.includes('.htaccess')) {  // condition chek to get all the urls that contain the song folders only
+        if (a.href.includes('/songs') && !a.href.includes('.DS_Store')) {  // condition chek to get all the urls that contain the song folders only
             let folder = a.href.split('/').slice(-2)[0]  // extracting the folder names from a.href
 
             // Gettng the metadata of the folder
