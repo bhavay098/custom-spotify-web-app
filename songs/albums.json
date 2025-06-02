@@ -1,0 +1,59 @@
+{
+    "albums": [
+        {
+            "folder": "cs",
+            "title": "Copyright Songs",
+            "description": "Soothing Songs For You"
+        },
+        {
+            "folder": "ncs",
+            "title": "Sleep Songs",
+            "description": "Relaxing Songs for you"
+        },
+        {
+            "folder": "Phonk",
+            "title": "Phonked",
+            "description": "Get Phonked"
+        },
+        {
+            "folder": "Lofi",
+            "title": "Lofi Songs",
+            "description": "Just relax!"
+        },
+        {
+            "folder": "Rock",
+            "title": "Rock Mix",
+            "description": "Get The Party Started"
+        },
+        {
+            "folder": "Hip hop",
+            "title": "Hip Hop Mix",
+            "description": "In Da Hood"
+        },
+        {
+            "folder": "House",
+            "title": "Techno House",
+            "description": "For Base Lovers"
+        },
+        {
+            "folder": "Metal",
+            "title": "Metal Mix",
+            "description": "Get Energized"
+        },
+        {
+            "folder": "Workout",
+            "title": "Workout",
+            "description": "Keep Grinding!"
+        },
+        {
+            "folder": "EDM",
+            "title": "EDM Hits",
+            "description": "Get Electrified"
+        },
+        {
+            "folder": "Pop",
+            "title": "Pop Mix",
+            "description": "Catchy and upbeat"
+        }
+    ]
+}

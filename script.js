@@ -51,32 +51,24 @@ async function getSongs(folder) {
 
 // Function to display all the albums on page
 async function displayAlbums() {
-    let response = await fetch(`songs`);  // Makes a GET request to your local server (localhost:3000) at the /songs/ endpoint.
-    let data = await response.text();  // Reads the body content of the response as plain text.
-    let div = document.createElement('div');
-    div.innerHTML = data;  // turning data into DOM elements
+    // Fetch the master metadata file from songs/info.json
+    let response = await fetch(`songs/albums.json`);
+    let { albums } = await response.json();  // Destructure to get the albums array
 
-    let anchors = div.getElementsByTagName('a');  // storing all the anchor tags in variable
-    Array.from(anchors).forEach(async (a) => {  // converting the anchors variable from html collection to an Array to apply for each
-        if (a.href.includes('/songs') && !a.href.includes('.DS_Store')) {  // condition chek to get all the urls that contain the song folders only
-            let folder = a.href.split('/').slice(-2)[0]  // extracting the folder names from a.href
-
-            // Gettng the metadata of the folder
-            let response = await fetch(`songs/${folder}/info.json`);  // fetching the data from the json file created in each of the folders in songs
-            let data = await response.json();
-
-            // Inserting cards in the card container dynamically
-            document.querySelector('.cardContainer').insertAdjacentHTML('beforeend',
-                `<div data-folder="${folder}" class="card">
-                    <img src="songs/${folder}/cover.jpeg" alt="">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="48" height="48" fill="none">
-                        <circle cx="12" cy="12" r="12" fill="#25D366" />
-                        <polygon points="9,7 9,17 17,12" fill="#000000" />
-                    </svg>
-                    <h2>${data.title}</h2>
-                    <p>${data.description}</p>
-                </div>`)  // Using insertAdjacentHTML('beforeend', ...) to add the card at the end of card container without erasing the old ones
-        }
+    // Loop through each album metadata
+    albums.forEach((album) => {
+        // Create and insert a card dynamically
+        document.querySelector('.cardContainer').insertAdjacentHTML('beforeend',
+            `<div data-folder="${album.folder}" class="card">
+                <img src="songs/${album.folder}/cover.jpeg" alt="">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="48" height="48" fill="none">
+                    <circle cx="12" cy="12" r="12" fill="#25D366" />
+                    <polygon points="9,7 9,17 17,12" fill="#000000" />
+                </svg>
+                <h2>${album.title}</h2>
+                <p>${album.description}</p>
+            </div>`
+        );
     });
 }
 
@@ -179,7 +171,7 @@ async function playSong() {
 
         if (currentIndex < songs.length - 1) {  // condition check so that nothing plays after the last song in the list after clicking next
             audio.pause()  // pausing the current playing song
-            audio.src = `/${currFolder}/${songs[currentIndex + 1]}`;  // changing the audio source to next song through next song's index
+            audio.src = `${currFolder}/${songs[currentIndex + 1]}`;  // changing the audio source to next song through next song's index
             audio.play();
 
             let currentLi = document.querySelectorAll('.songList li')[currentIndex + 1];  // getting access of the li which contains the song name playing after clicking next
