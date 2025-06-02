@@ -14,7 +14,7 @@ function formatTime(seconds) {
 
 async function getSongs(folder) {
     currFolder = folder;  // the value of the currFolder will be the file path we provide as an argument to the function
-    let response = await fetch(`/${folder}`);  // Makes a GET request to your local server (localhost:3000) at the /songs/ endpoint.
+    let response = await fetch(`${folder}`);  // Makes a GET request to your local server (localhost:3000) at the /songs/ endpoint.
     let data = await response.text();  // Reads the body content of the response as plain text.
 
     let div = document.createElement('div');
@@ -62,7 +62,7 @@ async function getSongs(folder) {
 
 // Function to display all the albums on page
 async function displayAlbums() {
-    let response = await fetch(`/songs`);  // Makes a GET request to your local server (localhost:3000) at the /songs/ endpoint.
+    let response = await fetch(`songs`);  // Makes a GET request to your local server (localhost:3000) at the /songs/ endpoint.
     let data = await response.text();  // Reads the body content of the response as plain text.
     let div = document.createElement('div');
     div.innerHTML = data;  // turning data into DOM elements
@@ -73,13 +73,13 @@ async function displayAlbums() {
             let folder = a.href.split('/').slice(-2)[0]  // extracting the folder names from a.href
 
             // Gettng the metadata of the folder
-            let response = await fetch(`/songs/${folder}/info.json`);  // fetching the data from the json file created in each of the folders in songs
+            let response = await fetch(`songs/${folder}/info.json`);  // fetching the data from the json file created in each of the folders in songs
             let data = await response.json();
 
             // Inserting cards in the card container dynamically
             document.querySelector('.cardContainer').insertAdjacentHTML('beforeend',
                 `<div data-folder="${folder}" class="card">
-                    <img src="/songs/${folder}/cover.jpeg" alt="">
+                    <img src="songs/${folder}/cover.jpeg" alt="">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="48" height="48" fill="none">
                         <circle cx="12" cy="12" r="12" fill="#25D366" />
                         <polygon points="9,7 9,17 17,12" fill="#000000" />
