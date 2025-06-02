@@ -14,7 +14,7 @@ function formatTime(seconds) {
 
 async function getSongs(folder) {
     currFolder = folder;  // the value of the currFolder will be the file path we provide as an argument to the function
-    let response = await fetch(`${folder}`);  // Makes a GET request to your local server (localhost:3000) at the /songs/ endpoint.
+    let response = await fetch(`/${folder}`);  // Makes a GET request to your local server (localhost:3000) at the /songs/ endpoint.
     let data = await response.text();  // Reads the body content of the response as plain text.
 
     let div = document.createElement('div');
@@ -26,7 +26,7 @@ async function getSongs(folder) {
         const element = a[index];
 
         if (element.href.endsWith('.mp3')) {  //  element.href refers to the full URL of the <a> tag's href attribute.
-            songs.push(element.href.split(`${folder}/`)[1].replaceAll('%20', ' '));  // pushing the song name extracted from URL into the songs array if true
+            songs.push(decodeURIComponent(element.href.split(`${folder}/`)[1]))  // pushing the song name extracted from URL into the songs array if true
         }
     }
 
@@ -35,13 +35,13 @@ async function getSongs(folder) {
     songUL.innerHTML = "";  // clearing the ul first before displaying songs in it
     songs.forEach((song) => {
         let li = document.createElement('li');  // creating li element
-        li.dataset.url = `${currFolder}/${song}`;  // storing the actual song name along with .mp3 extension with song path in the li data attribute
+        li.dataset.url = `/${currFolder}/${song}`;  // storing the actual song name along with .mp3 extension with song path in the li data attribute
         li.innerHTML = `
-        <img src="images/music.svg" alt="">
+        <img src="/images/music.svg" alt="">
         <div class="songName">
             <div>${song.replace('.mp3', '').trim()}</div>
         </div>
-        <img src="images/playbtn2.svg" alt="">`;  // splitting the song href to get just the song name (line no. 31)
+        <img src="/images/playbtn2.svg" alt="">`;  // splitting the song href to get just the song name (line no. 31)
         songUL.appendChild(li);
     });
 
@@ -51,7 +51,7 @@ async function getSongs(folder) {
             audio.src = li.dataset.url;  // get the URL directly from the li
             audio.play();  // starts playing the song
 
-            playbtn.src = 'images/pausebtn.svg'  // changing play button img to pause after playing the song
+            playbtn.src = '/images/pausebtn.svg'  // changing play button img to pause after playing the song
             document.querySelector('.songInfo').innerText = li.querySelector('.songName div').innerText;  // updating current playing song name from DOM
             // document.querySelector('.songTime').innerHTML = '00:00 / 00:00'  // updating current playing song time
             console.log(`Now Playing ${li.dataset.url}`);
@@ -62,7 +62,7 @@ async function getSongs(folder) {
 
 // Function to display all the albums on page
 async function displayAlbums() {
-    let response = await fetch(`songs`);  // Makes a GET request to your local server (localhost:3000) at the /songs/ endpoint.
+    let response = await fetch(`/songs`);  // Makes a GET request to your local server (localhost:3000) at the /songs/ endpoint.
     let data = await response.text();  // Reads the body content of the response as plain text.
     let div = document.createElement('div');
     div.innerHTML = data;  // turning data into DOM elements
@@ -73,13 +73,13 @@ async function displayAlbums() {
             let folder = a.href.split('/').slice(-2)[0]  // extracting the folder names from a.href
 
             // Gettng the metadata of the folder
-            let response = await fetch(`songs/${folder}/info.json`);  // fetching the data from the json file created in each of the folders in songs
+            let response = await fetch(`/songs/${folder}/info.json`);  // fetching the data from the json file created in each of the folders in songs
             let data = await response.json();
 
             // Inserting cards in the card container dynamically
             document.querySelector('.cardContainer').insertAdjacentHTML('beforeend',
                 `<div data-folder="${folder}" class="card">
-                    <img src="songs/${folder}/cover.jpeg" alt="">
+                    <img src="/songs/${folder}/cover.jpeg" alt="">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="48" height="48" fill="none">
                         <circle cx="12" cy="12" r="12" fill="#25D366" />
                         <polygon points="9,7 9,17 17,12" fill="#000000" />
@@ -105,17 +105,17 @@ async function playSong() {
         let card = e.target.closest('.card');  // climbs up the DOM tree from the clicked element until it finds the closest ancestor that matches .card
         if (card) {  // making sure the event listener works even when the user clicks on img, svg or h2 inside the card
             await getSongs(`songs/${card.dataset.folder}`);
-            audio.src = `${currFolder}/${songs[0]}`  // playing the first song of the list automatically after clicking a card
+            audio.src = `/${currFolder}/${songs[0]}`  // playing the first song of the list automatically after clicking a card
             audio.play();
 
             let firstLi = document.querySelector('.songList li');  // getting access of the first li
             document.querySelector('.songInfo').innerText = firstLi.querySelector('.songName div').innerText  // updating song name in playbar
-            document.querySelector('#playbtn').src = 'images/pausebtn.svg'  // changing play button to pause 
+            document.querySelector('#playbtn').src = '/images/pausebtn.svg'  // changing play button to pause 
         }
     })
 
     // Load the first song in queue by default after page reload
-    audio.src = `${currFolder}/${songs[0]}`;  // Set the source but don't auto-play
+    audio.src = `/${currFolder}/${songs[0]}`;  // Set the source but don't auto-play
     let firstLi = document.querySelector('.songList li');  // getting access of the first li
     let songName = firstLi.querySelector('.songName div').innerText;  // getting access of the first li's song name
     document.querySelector('.songInfo').innerText = songName;  // Updating song name display
@@ -132,11 +132,11 @@ async function playSong() {
     playbtn.addEventListener('click', () => {
         if (audio.paused) {
             audio.play();  // play the song if it is paused
-            playbtn.src = 'images/pausebtn.svg'  // changing play button img to pause btn
+            playbtn.src = '/images/pausebtn.svg'  // changing play button img to pause btn
         }
         else {
             audio.pause();  // pause the song if it's already played
-            playbtn.src = 'images/playbtn.svg'  // changing pause button img to play btn
+            playbtn.src = '/images/playbtn.svg'  // changing pause button img to play btn
         }
     });
 
@@ -169,33 +169,33 @@ async function playSong() {
 
     // Adding event listner on previous song button
     document.querySelector('#previousbtn').addEventListener('click', () => {
-        let currentSongName = decodeURI(audio.src).split(`${currFolder}/`)[1]  // extracting the song name from the current playing song's url
+        let currentSongName = decodeURIComponent(audio.src).split(`/${currFolder}/`)[1]  // extracting the song name from the current playing song's url
         let currentIndex = songs.indexOf(currentSongName);  // finding the index of current playing song
 
         if (currentIndex > 0) {  // condition check so that nothing plays before the first song in the list after clicking previous
             audio.pause()  // pausing the current playing song
-            audio.src = `${currFolder}/${songs[currentIndex - 1]}`;  // changing the audio source to previous song through previous song's index
+            audio.src = `/${currFolder}/${songs[currentIndex - 1]}`;  // changing the audio source to previous song through previous song's index
             audio.play()
 
             let currentLi = document.querySelectorAll('.songList li')[currentIndex - 1];  // getting access of the li which contains the song name playing after clicking previous
             document.querySelector('.songInfo').innerText = currentLi.querySelector('.songName div').innerText  // updating song name in playbar
-            document.querySelector('#playbtn').src = 'images/pausebtn.svg'  // changing play button to pause            
+            document.querySelector('#playbtn').src = '/images/pausebtn.svg'  // changing play button to pause            
         }
     });
 
     // Adding event listener on next song button
     document.querySelector('#nextbtn').addEventListener('click', () => {
-        let currentSongName = decodeURI(audio.src).split(`${currFolder}/`)[1]  // extracting the song name from the current playing song's url
+        let currentSongName = decodeURIComponent(audio.src).split(`${currFolder}/`)[1]  // extracting the song name from the current playing song's url
         let currentIndex = songs.indexOf(currentSongName);  // finding the index of current playing song
 
         if (currentIndex < songs.length - 1) {  // condition check so that nothing plays after the last song in the list after clicking next
             audio.pause()  // pausing the current playing song
-            audio.src = `${currFolder}/${songs[currentIndex + 1]}`;  // changing the audio source to next song through next song's index
+            audio.src = `/${currFolder}/${songs[currentIndex + 1]}`;  // changing the audio source to next song through next song's index
             audio.play();
 
             let currentLi = document.querySelectorAll('.songList li')[currentIndex + 1];  // getting access of the li which contains the song name playing after clicking next
             document.querySelector('.songInfo').innerText = currentLi.querySelector('.songName div').innerText  // updating song name in playbar
-            document.querySelector('#playbtn').src = 'images/pausebtn.svg'  // changing play button to pause
+            document.querySelector('#playbtn').src = '/images/pausebtn.svg'  // changing play button to pause
         }
     });
 
@@ -208,10 +208,10 @@ async function playSong() {
         audio.volume = inputValue / 100;  // dividing the value by 100 as audio.volume accepts values between 0.0 (silent) and 1.0 (full volume) 
 
         if (audio.volume === 0) {  // if volume is 0 then change the volume icon to mute
-            document.querySelector('.volume img').src = 'images/mute.svg';
+            document.querySelector('.volume img').src = '/images/mute.svg';
         }
         else {  // if voume isn't 0 then change the mute icon to volume
-            document.querySelector('.volume img').src = 'images/volume.svg';
+            document.querySelector('.volume img').src = '/images/volume.svg';
         }
     });
 
@@ -219,14 +219,14 @@ async function playSong() {
     document.querySelector('.volume>img').addEventListener('click', (event) => {
         if (event.target.src.includes('volume.svg')) {  // condition check weather song is unmuted
             // Mute
-            event.target.src = 'images/mute.svg'  // changing volume icon to mute icon
+            event.target.src = '/images/mute.svg'  // changing volume icon to mute icon
             audio.volume = 0;  // turning volume to 0
             document.querySelector('#volume').value = 0  // making the knob in the volume slider go to 0
             document.querySelector('#volume').style.setProperty('--percent', `0%`)  // updating the bg color of the volume slider track
         }
         else {
             // Unmute
-            event.target.src = 'images/volume.svg'
+            event.target.src = '/images/volume.svg'
             audio.volume = 0.5
             document.querySelector('#volume').value = 50
             document.querySelector('#volume').style.setProperty('--percent', `50%`)
